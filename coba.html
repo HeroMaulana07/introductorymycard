@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hologram Card Animation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: radial-gradient(circle at center, #050505 60%, #000);
+        overflow: hidden;
+      }
+
+      .holo-card {
+        width: 300px;
+        height: 180px;
+        background: rgba(15, 15, 15, 0.9);
+        border-radius: 20px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        text-align: center;
+        padding: 30px;
+        transition: 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+      }
+
+      /* Gradient holographic border */
+      .holo-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        padding: 2px;
+        background: linear-gradient(
+          90deg,
+          #00ffff,
+          #ff00ff,
+          #00ff88,
+          #00ffff,
+          #ff00ff
+        );
+        background-size: 300% 300%;
+        animation: holoRotate 8s linear infinite;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: 0;
+      }
+
+      @keyframes holoRotate {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 200% 50%;
+        }
+      }
+
+      .holo-card h2 {
+        font-size: 1.3rem;
+        color: #00ffff;
+        text-shadow: 0 0 10px #00ffff;
+        position: relative;
+        z-index: 2;
+      }
+
+      .holo-card p {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-top: 8px;
+        z-index: 2;
+        position: relative;
+      }
+
+      /* ✨ Click effect (holographic flash + pulse glow) */
+      .holo-card.clicked::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.4),
+          transparent 70%
+        );
+        animation: holoFlash 0.8s ease;
+        z-index: 1;
+      }
+
+      @keyframes holoFlash {
+        0% {
+          opacity: 1;
+          transform: scale(0.9);
+          filter: blur(6px);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(1.05);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.2);
+        }
+      }
+
+      /* Hover effect */
+      .holo-card:hover {
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        transform: translateY(-4px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="holo-card">
+      <h2>Project Nova</h2>
+      <p>Next-Gen Interface Design</p>
+    </div>
+
+    <script>
+      const card = document.querySelector(".holo-card");
+      card.addEventListener("click", () => {
+        card.classList.add("clicked");
+        setTimeout(() => card.classList.remove("clicked"), 800);
+      });
+    </script>
+  </body>
+</html>
